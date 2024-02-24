@@ -1,0 +1,69 @@
+-- Définition des dimensions du tunnel
+local longueur = 48
+local largeur = 16
+local profondeur = 180
+
+-- Fonction pour creuser un tunnel
+local function creuserTunnel()
+    for p = 1, profondeur do
+        -- Creuser une couche à la fois
+        for l = 1, longueur do
+            -- Creuser la longueur du tunnel
+            for w = 1, largeur do
+                -- Creuser la largeur du tunnel
+                turtle.dig()
+                turtle.forward()
+            end
+
+            -- Revenir au début de la rangée
+            if l < longueur then
+                if l % 2 == 0 then
+                    turtle.turnRight()
+                    turtle.dig()
+                    turtle.forward()
+                    turtle.turnRight()
+                else
+                    turtle.turnLeft()
+                    turtle.dig()
+                    turtle.forward()
+                    turtle.turnLeft()
+                end
+            end
+        end
+
+        -- Retourner à la surface
+        for i = 1, largeur do
+            turtle.back()
+        end
+
+        -- Creuser vers le bas
+        if p < profondeur then
+            turtle.digDown()
+            turtle.down()
+        end
+    end
+end
+
+-- Vérifier les ressources de la turtle
+local function verifierRessources()
+    if turtle.getItemCount(1) == 0 then
+        print("Attention : Il n'y a pas de combustible.")
+        return false
+    end
+
+    return true
+end
+
+-- Fonction principale
+local function main()
+    if not verifierRessources() then
+        return
+    end
+
+    print("Début de la création du tunnel...")
+    creuserTunnel()
+    print("Tunnel créé avec succès !")
+end
+
+-- Exécution du programme principal
+main()
